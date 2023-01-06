@@ -2,23 +2,25 @@
 import dj_database_url
 import os
 from pathlib import Path
-
+import dotenv
 from django.contrib import staticfiles
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
+# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9o^!5shqqavj@#@&36+y+nl3csjw2%hr3(wrzh@be05fd5ita)'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 # ALLOWED_HOSTS = ['.vercel.app', '.now.sh']
-# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -77,16 +79,16 @@ WSGI_APPLICATION = 'portfolio.wsgi.application'
 #     }
 # }
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'HOST': 'db.iakfgtsenuershstqyfp.supabase.co', #e.g localhost db.iakfgtsenuershstqyfp.supabase.co
-            'NAME': 'postgres',
-            'USER': 'postgres', #e.g postgres
-            'PASSWORD': 'DavisMhango96%',  #DavisMhango96%
-            'PORT': '5432',
+    'default': {
+        'ENGINE': os.environ['ENGINE'],
+        'HOST': os.environ['HOST'],
+        'NAME': os.environ['NAME'],
+        'USER': os.environ['USER'],
+        'PASSWORD': os.environ['PASSWORD'],
+        'PORT': os.environ['PORT'],
 
-        }
     }
+}
 
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
